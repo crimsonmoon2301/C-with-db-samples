@@ -1,0 +1,10 @@
+F:\prog ar db\1prak\bin\Debug\1prak.exe.config
+F:\prog ar db\1prak\bin\Debug\1prak.exe
+F:\prog ar db\1prak\bin\Debug\1prak.pdb
+F:\prog ar db\1prak\obj\Debug\1prak.csproj.AssemblyReference.cache
+F:\prog ar db\1prak\obj\Debug\1prak.csproj.CoreCompileInputs.cache
+F:\prog ar db\1prak\obj\Debug\1prak.exe
+F:\prog ar db\1prak\obj\Debug\1prak.pdb
+F:\prog ar db\1prak\obj\Debug\_1prak.Properties.Resources.resources
+F:\prog ar db\1prak\obj\Debug\1prak.csproj.GenerateResource.cache
+F:\prog ar db\1prak\bin\Debug\Database1.accdb
