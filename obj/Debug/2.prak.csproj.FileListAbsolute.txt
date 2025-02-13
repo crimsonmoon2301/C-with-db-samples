@@ -1,8 +1,0 @@
-F:\prog ar db\2.prak\bin\Debug\2.prak.exe.config
-F:\prog ar db\2.prak\bin\Debug\2.prak.exe
-F:\prog ar db\2.prak\bin\Debug\2.prak.pdb
-F:\prog ar db\2.prak\obj\Debug\2.prak.csproj.AssemblyReference.cache
-F:\prog ar db\2.prak\obj\Debug\2.prak.csproj.CoreCompileInputs.cache
-F:\prog ar db\2.prak\obj\Debug\2.prak.exe
-F:\prog ar db\2.prak\obj\Debug\2.prak.pdb
-F:\prog ar db\2.prak\bin\Debug\Database2.accdb
