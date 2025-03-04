@@ -50,6 +50,7 @@ namespace _2.prak
                         Console.WriteLine("\n\nSpiediet jebkuru pogu, lai ietu atpakaļ.");
                         Console.ReadKey();
                         Console.Clear();
+                        con.Close();
                         break;
                     // Ierakstu papildināšana
                     case 2:
