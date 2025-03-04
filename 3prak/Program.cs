@@ -225,7 +225,7 @@ namespace _3prak
         static void GetDB(OleDbConnection con)
         {
             Console.Clear();
-            // Parāda datubāzes ierakstus lai vieglāk izlemt kurus dzēst.
+            // Parāda datubāzes ierakstus, lai nav visos case situācijās copy paste jādara
             OleDbCommand command = new OleDbCommand("Select * from Dators", con);
             //con.Open();
             OleDbDataReader dataReader = command.ExecuteReader();
