@@ -29,7 +29,7 @@ namespace _3prak
                 Console.Write("Tava izvēle: ");
                 int option = Convert.ToInt32(Console.ReadLine());
 
-                string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\\prog ar db\\3.prak\\Database3.accdb";
+                string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\\prog ar db\\3prak\\Database3.accdb";
                 OleDbConnection con = new OleDbConnection(connectionString);
 
 
