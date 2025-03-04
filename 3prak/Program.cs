@@ -77,7 +77,6 @@ namespace _3prak
                         con.Open();
                         using (con)
                         {
-                            GetDB(con);
                             OleDbTransaction transaction = null;
                             try
                             {
