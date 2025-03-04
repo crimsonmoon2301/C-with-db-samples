@@ -111,7 +111,8 @@ namespace _3prak
                                 addCmd.Transaction = transaction;
                                 addCmd.ExecuteNonQuery();
                                 transaction.Commit();
-
+                                con.Close();
+                                
                                 Console.WriteLine("\nIeraksts veiksmīgi modificēts! Spied jebkuru pogu, lai ietu atpakaļ uz galveno izvēlni.");
                                 Console.ReadKey();
                                 Console.Clear();
