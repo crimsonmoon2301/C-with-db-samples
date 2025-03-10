@@ -16,7 +16,10 @@ namespace _4prak
             Console.WriteLine("\nID\tRažotājs\tModelis\t\tRAM\tCPU\t\tOS");
             foreach (DataRow row in dt.Rows)
             {
-                Console.WriteLine($"{row["ID"]}\t{row["Razotajs"]}\t\t{row["Modelis"]}\t{row["RAM"]}\t{row["CPU"]}\t{row["OS"]}");
+                if (row.RowState != DataRowState.Deleted)
+                {
+                    Console.WriteLine($"{row["ID"]}\t{row["Razotajs"]}\t\t{row["Modelis"]}\t{row["RAM"]}\t{row["CPU"]}\t{row["OS"]}");
+                }
             }
         }
         static void InitDataTable(DataTable dt)
@@ -52,6 +55,7 @@ namespace _4prak
                     dt.Rows.Add(row);
 
                 }
+                dt.AcceptChanges();
             }
         }
 
@@ -202,50 +206,59 @@ namespace _4prak
                         using (OleDbConnection conn = new OleDbConnection(accessConnString))
                         {
                             conn.Open();
-                            foreach (DataRow row in dt.Rows)
+
+                            // Process deletions first to avoid conflicts
+                            DataRow[] deletedRows = dt.Select(null, null, DataViewRowState.Deleted);
+                            foreach (DataRow row in deletedRows)
                             {
-                                if (row.RowState == DataRowState.Added)
+                                string query = "DELETE FROM Dators WHERE ID=?";
+                                using (OleDbCommand cmd = new OleDbCommand(query, conn))
                                 {
-                                    string query = "INSERT INTO Dators (Razotajs, Modelis, RAM, CPU, OS) VALUES (?, ?, ?, ?, ?)";
-                                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
-                                    {
-                                        cmd.Parameters.AddWithValue("?", row["Razotajs"]);
-                                        cmd.Parameters.AddWithValue("?", row["Modelis"]);
-                                        cmd.Parameters.AddWithValue("?", row["RAM"]);
-                                        cmd.Parameters.AddWithValue("?", row["CPU"]);
-                                        cmd.Parameters.AddWithValue("?", row["OS"]);
-                                        cmd.ExecuteNonQuery();
-                                    }
-                                    
-                                }
-                                else if (row.RowState == DataRowState.Modified)
-                                {
-                                    string query = "UPDATE Dators SET Razotajs=?, Modelis=?, RAM=?, CPU=?, OS=? WHERE ID=?";
-                                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
-                                    {
-                                        cmd.Parameters.AddWithValue("?", row["Razotajs"]);
-                                        cmd.Parameters.AddWithValue("?", row["Modelis"]);
-                                        cmd.Parameters.AddWithValue("?", row["RAM"]);
-                                        cmd.Parameters.AddWithValue("?", row["CPU"]);
-                                        cmd.Parameters.AddWithValue("?", row["OS"]);
-                                        cmd.Parameters.AddWithValue("?", row["ID"]);
-                                        cmd.ExecuteNonQuery();
-                                    }
-                                    dt.AcceptChanges();
-                                    
-                                }
-                                else if (row.RowState == DataRowState.Deleted)
-                                {
-                                    string query = "DELETE FROM Dators WHERE ID=?";
-                                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
-                                    {
-                                        cmd.Parameters.AddWithValue("?", row["ID", DataRowVersion.Original]);
-                                        cmd.ExecuteNonQuery();
-                                    }
+                                    cmd.Parameters.AddWithValue("?", row["ID", DataRowVersion.Original]);
+                                    cmd.ExecuteNonQuery();
                                 }
                             }
-                            dt.AcceptChanges();
+
+                            // Process inserts
+                            foreach (DataRow row in dt.Select(null, null, DataViewRowState.Added))
+                            {
+                                string query = "INSERT INTO Dators (Razotajs, Modelis, RAM, CPU, OS) VALUES (?, ?, ?, ?, ?)";
+                                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                                {
+                                    cmd.Parameters.AddWithValue("?", row["Razotajs"]);
+                                    cmd.Parameters.AddWithValue("?", row["Modelis"]);
+                                    cmd.Parameters.AddWithValue("?", row["RAM"]);
+                                    cmd.Parameters.AddWithValue("?", row["CPU"]);
+                                    cmd.Parameters.AddWithValue("?", row["OS"]);
+                                    cmd.ExecuteNonQuery();
+                                }
+
+                                // Retrieve the last inserted ID
+                                using (OleDbCommand getIdCmd = new OleDbCommand("SELECT @@IDENTITY", conn))
+                                {
+                                    row["ID"] = Convert.ToInt32(getIdCmd.ExecuteScalar());
+                                }
+                            }
+
+                            // Process updates
+                            foreach (DataRow row in dt.Select(null, null, DataViewRowState.ModifiedCurrent))
+                            {
+                                string query = "UPDATE Dators SET Razotajs=?, Modelis=?, RAM=?, CPU=?, OS=? WHERE ID=?";
+                                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                                {
+                                    cmd.Parameters.AddWithValue("?", row["Razotajs"]);
+                                    cmd.Parameters.AddWithValue("?", row["Modelis"]);
+                                    cmd.Parameters.AddWithValue("?", row["RAM"]);
+                                    cmd.Parameters.AddWithValue("?", row["CPU"]);
+                                    cmd.Parameters.AddWithValue("?", row["OS"]);
+                                    cmd.Parameters.AddWithValue("?", row["ID"]);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+
+                            dt.AcceptChanges(); // Confirm all changes
                         }
+
                         Console.WriteLine("Izmaiņas sinhronizētas ar datubāzi!");
                         break;
                     case 6:
