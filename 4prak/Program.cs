@@ -13,23 +13,23 @@ namespace _4prak
         static DataTable dt = new DataTable();
         static void DisplayDataTable(DataTable dt)
         {
-            Console.WriteLine("\nID\tRažotājs\tModelis\t\tRAM\tCPU\t\tOS");
+            Console.WriteLine("\nID\tDistroName\tDifficulty\t\tPackage_Manager\tInit_system\t\tUpdate_type");
             foreach (DataRow row in dt.Rows)
             {
                 if (row.RowState != DataRowState.Deleted)
                 {
-                    Console.WriteLine($"{row["ID"]}\t{row["Razotajs"]}\t\t{row["Modelis"]}\t{row["RAM"]}\t{row["CPU"]}\t{row["OS"]}");
+                    Console.WriteLine($"{row["ID"]}\t{row["Disname"]}\t\t{row["Difficulty"]}\t\t\t{row["Packman"]}\t\t{row["Init"]}\t\t\t{row["Update_type"]}");
                 }
             }
         }
         static void InitDataTable(DataTable dt)
         {
             dt.Columns.Add(new DataColumn("ID", typeof(int)));
-            dt.Columns.Add(new DataColumn("Razotajs", typeof(string)));
-            dt.Columns.Add(new DataColumn("Modelis", typeof(string)));
-            dt.Columns.Add(new DataColumn("RAM", typeof(string)));
-            dt.Columns.Add(new DataColumn("CPU", typeof(string)));
-            dt.Columns.Add(new DataColumn("OS", typeof(string)));
+            dt.Columns.Add(new DataColumn("Disname", typeof(string)));
+            dt.Columns.Add(new DataColumn("Difficulty", typeof(string)));
+            dt.Columns.Add(new DataColumn("Packman", typeof(string)));
+            dt.Columns.Add(new DataColumn("Init", typeof(string)));
+            dt.Columns.Add(new DataColumn("Update_type", typeof(string)));
             dt.PrimaryKey = new DataColumn[] { dt.Columns["ID"] };
             dt.Clear();
         }
@@ -39,7 +39,7 @@ namespace _4prak
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 conn.Open();
-                OleDbCommand cmd = new OleDbCommand("SELECT * FROM Dators", conn);
+                OleDbCommand cmd = new OleDbCommand("SELECT * FROM Linux", conn);
                 OleDbDataReader reader = cmd.ExecuteReader();
                 dt.Clear();
 
@@ -47,11 +47,11 @@ namespace _4prak
                 {
                     DataRow row = dt.NewRow();
                     row["ID"] = reader["ID"];
-                    row["Razotajs"] = reader["Razotajs"];
-                    row["Modelis"] = reader["Modelis"];
-                    row["RAM"] = reader["RAM"];
-                    row["CPU"] = reader["CPU"];
-                    row["OS"] = reader["OS"];
+                    row["Disname"] = reader["Disname"];
+                    row["Difficulty"] = reader["Difficulty"];
+                    row["Packman"] = reader["Packman"];
+                    row["Init"] = reader["Init"];
+                    row["Update_type"] = reader["Update_type"];
                     dt.Rows.Add(row);
 
                 }
@@ -71,20 +71,20 @@ namespace _4prak
 
                 row["ID"] = dt.Rows.Count == 0 ? 1 : dt.Rows.Cast<DataRow>().Max(r => r.Field<int>("ID")) + 1;
 
-                Console.Write("Ražotājs: ");
-                row["Razotajs"] = Console.ReadLine();
+                Console.Write("Norādiet distributīva nosaukumu: ");
+                row["Disname"] = Console.ReadLine();
 
-                Console.Write("Modelis: ");
-                row["Modelis"] = Console.ReadLine();
+                Console.Write("Grūtības pakāpe?: ");
+                row["Difficulty"] = Console.ReadLine();
 
-                Console.Write("RAM (GB): ");
-                row["RAM"] = Console.ReadLine();
+                Console.Write("Kāds ir izmantots pakotņu menedžeris?: ");
+                row["Packman"] = Console.ReadLine();
 
-                Console.Write("CPU: ");
-                row["CPU"] = Console.ReadLine();
+                Console.Write("Norādiet init sistēmu (piem. systemd):  ");
+                row["Init"] = Console.ReadLine();
 
-                Console.Write("OS: ");
-                row["OS"] = Console.ReadLine();
+                Console.Write("Kāds ir update veids?: ");
+                row["Update_type"] = Console.ReadLine();
 
                 dt.Rows.Add(row);
             }
@@ -126,25 +126,25 @@ namespace _4prak
             {
                 DataRow row = rows[0];
 
-                Console.Write($"Jaunais ražotājs ({row["Razotajs"]}): ");
-                string razotajs = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(razotajs)) row["Razotajs"] = razotajs;
+                Console.Write($"Jaunais distributīvu nosaukums ({row["Disname"]}): ");
+                string disname = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(disname)) row["Disname"] = disname;
 
-                Console.Write($"Jaunais modelis ({row["Modelis"]}): ");
-                string modelis = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(modelis)) row["Modelis"] = modelis;
+                Console.Write($"Grūtības pakāpe ({row["Difficulty"]}): ");
+                string diff = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(diff)) row["Difficulty"] = diff;
 
-                Console.Write($"Jaunais RAM ({row["RAM"]}): ");
-                string ram = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(ram)) row["RAM"] = ram;
+                Console.Write($"Kādu pakotņu menedžeri izmanto? ({row["Packman"]}): ");
+                string pacman = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(pacman)) row["Packman"] = pacman;
 
-                Console.Write($"Jaunais CPU ({row["CPU"]}): ");
-                string cpu = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(cpu)) row["CPU"] = cpu;
+                Console.Write($"Norādiet init sistēmu (piem. systemd) ({row["Init"]}): ");
+                string init = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(init)) row["Init"] = init;
 
-                Console.Write($"Jaunā OS ({row["OS"]}): ");
-                string os = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(os)) row["OS"] = os;
+                Console.Write($"Atjaunojumu tips ({row["Update_type"]}): ");
+                string update = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(update)) row["Update_type"] = update;
 
                 Console.WriteLine($"Ieraksts ar ID {id} atjaunināts! Neaizmirsti sinhronizēt ar [5].");
             }
@@ -159,7 +159,7 @@ namespace _4prak
         static void Main(string[] args)
         {
             bool stop = false;
-            string accessConnString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\\prog ar db\\4prak\\Database4.accdb";
+            string accessConnString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=F:\\prog ar db\\4prak\\Database5.accdb";
             InitDataTable(dt);
             LoadData(accessConnString);
 
@@ -211,7 +211,7 @@ namespace _4prak
                             DataRow[] deletedRows = dt.Select(null, null, DataViewRowState.Deleted);
                             foreach (DataRow row in deletedRows)
                             {
-                                string query = "DELETE FROM Dators WHERE ID=?";
+                                string query = "DELETE FROM Linux WHERE ID=?";
                                 using (OleDbCommand cmd = new OleDbCommand(query, conn))
                                 {
                                     cmd.Parameters.AddWithValue("?", row["ID", DataRowVersion.Original]);
@@ -222,35 +222,35 @@ namespace _4prak
                             // Process inserts
                             foreach (DataRow row in dt.Select(null, null, DataViewRowState.Added))
                             {
-                                string query = "INSERT INTO Dators (Razotajs, Modelis, RAM, CPU, OS) VALUES (?, ?, ?, ?, ?)";
+                                string query = "INSERT INTO Linux (Disname, Difficulty, Packman, Init, Update_type) VALUES (?, ?, ?, ?, ?)";
                                 using (OleDbCommand cmd = new OleDbCommand(query, conn))
                                 {
-                                    cmd.Parameters.AddWithValue("?", row["Razotajs"]);
-                                    cmd.Parameters.AddWithValue("?", row["Modelis"]);
-                                    cmd.Parameters.AddWithValue("?", row["RAM"]);
-                                    cmd.Parameters.AddWithValue("?", row["CPU"]);
-                                    cmd.Parameters.AddWithValue("?", row["OS"]);
+                                    cmd.Parameters.AddWithValue("?", row["Disname"]);
+                                    cmd.Parameters.AddWithValue("?", row["Difficulty"]);
+                                    cmd.Parameters.AddWithValue("?", row["Packman"]);
+                                    cmd.Parameters.AddWithValue("?", row["Init"]);
+                                    cmd.Parameters.AddWithValue("?", row["Update_type"]);
                                     cmd.ExecuteNonQuery();
                                 }
 
                                 // Retrieve the last inserted ID
-                                using (OleDbCommand getIdCmd = new OleDbCommand("SELECT @@IDENTITY", conn))
-                                {
-                                    row["ID"] = Convert.ToInt32(getIdCmd.ExecuteScalar());
-                                }
+                                //using (OleDbCommand getIdCmd = new OleDbCommand("SELECT @@IDENTITY", conn))
+                                //{
+                                //    row["ID"] = Convert.ToInt32(getIdCmd.ExecuteScalar());
+                                //}
                             }
 
                             // Process updates
                             foreach (DataRow row in dt.Select(null, null, DataViewRowState.ModifiedCurrent))
                             {
-                                string query = "UPDATE Dators SET Razotajs=?, Modelis=?, RAM=?, CPU=?, OS=? WHERE ID=?";
+                                string query = "UPDATE Linux SET Disname=?, Difficulty=?, Packman=?, Init=?, Update_type=? WHERE ID=?";
                                 using (OleDbCommand cmd = new OleDbCommand(query, conn))
                                 {
-                                    cmd.Parameters.AddWithValue("?", row["Razotajs"]);
-                                    cmd.Parameters.AddWithValue("?", row["Modelis"]);
-                                    cmd.Parameters.AddWithValue("?", row["RAM"]);
-                                    cmd.Parameters.AddWithValue("?", row["CPU"]);
-                                    cmd.Parameters.AddWithValue("?", row["OS"]);
+                                    cmd.Parameters.AddWithValue("?", row["Disname"]);
+                                    cmd.Parameters.AddWithValue("?", row["Difficulty"]);
+                                    cmd.Parameters.AddWithValue("?", row["Packman"]);
+                                    cmd.Parameters.AddWithValue("?", row["Init"]);
+                                    cmd.Parameters.AddWithValue("?", row["Update_type"]);
                                     cmd.Parameters.AddWithValue("?", row["ID"]);
                                     cmd.ExecuteNonQuery();
                                 }
@@ -258,7 +258,7 @@ namespace _4prak
 
                             dt.AcceptChanges(); // Confirm all changes
                         }
-
+                        LoadData(accessConnString);
                         Console.WriteLine("Izmaiņas sinhronizētas ar datubāzi!");
                         break;
                     case 6:
