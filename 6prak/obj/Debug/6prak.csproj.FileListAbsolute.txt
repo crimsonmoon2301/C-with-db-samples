@@ -1,0 +1,10 @@
+F:\prog ar db\6prak\bin\Debug\6prak.exe.config
+F:\prog ar db\6prak\bin\Debug\6prak.exe
+F:\prog ar db\6prak\bin\Debug\6prak.pdb
+F:\prog ar db\6prak\obj\Debug\6prak.csproj.AssemblyReference.cache
+F:\prog ar db\6prak\obj\Debug\_6prak.Form1.resources
+F:\prog ar db\6prak\obj\Debug\_6prak.Properties.Resources.resources
+F:\prog ar db\6prak\obj\Debug\6prak.csproj.GenerateResource.cache
+F:\prog ar db\6prak\obj\Debug\6prak.csproj.CoreCompileInputs.cache
+F:\prog ar db\6prak\obj\Debug\6prak.exe
+F:\prog ar db\6prak\obj\Debug\6prak.pdb
