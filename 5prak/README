@@ -1,0 +1,7 @@
+Sakarā ar to, ka manai uni mapei nav noregulēts git kā vajag, nav iespējams pievienot *visu* projektu šeit, sakarā ar 100 failu limitu.
+
+Tātad, dependencies sekojoši:
+
+Npgsql 8.0.7-8.0.9, jaunākais uz .NET framework neiet.
+
+Kods te ir un 100% strādā, tādejādi var mierīgi iztestēt.
