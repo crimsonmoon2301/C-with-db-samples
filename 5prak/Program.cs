@@ -11,13 +11,15 @@ namespace _5prak
     internal class Program
     {
         static DataTable dt = new DataTable();
+
         static void View(DataTable dt, string connectionString)
         {
             using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
             {
-                connection.Open();
+                
                 string sql = "SELECT * FROM masina";
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, connection);
+                NpgsqlCommand u = new NpgsqlCommand(sql, connection);
+                NpgsqlDataAdapter da = new NpgsqlDataAdapter(u);
                 da.Fill(dt);
 
 
@@ -52,23 +54,12 @@ namespace _5prak
         {
             using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
             {
-                connection.Open();
-                NpgsqlCommand command = new NpgsqlCommand("SELECT * FROM masina", connection);
-                NpgsqlDataReader reader = command.ExecuteReader();
+
+                string sql = "SELECT * FROM masina";
+                NpgsqlCommand u = new NpgsqlCommand(sql, connection);
+                NpgsqlDataAdapter da = new NpgsqlDataAdapter(u);
                 dt.Clear();
-
-                while (reader.Read())
-                {
-                    DataRow dr = dt.NewRow();
-                    dr["id"] = reader["id"];
-                    dr["nosaukums"] = reader["nosaukums"];
-                    dr["svars"] = reader["svars"];
-                    dr["sedvietas"] = reader["sedvietas"];
-                    dr["marka"] = reader["marka"];
-                    dr["modelis"] = reader["modelis"];
-                    dt.Rows.Add(dr);
-
-                }
+                da.Fill(dt);
 
                 dt.AcceptChanges();             
                 
@@ -108,9 +99,9 @@ namespace _5prak
                 NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, connection);
                 NpgsqlCommandBuilder cb = new NpgsqlCommandBuilder(da);
 
-                da.InsertCommand = cb.GetInsertCommand();
-                da.UpdateCommand = cb.GetUpdateCommand();
-                da.DeleteCommand = cb.GetDeleteCommand();
+                //da.InsertCommand = cb.GetInsertCommand();
+                //da.UpdateCommand = cb.GetUpdateCommand();
+                //da.DeleteCommand = cb.GetDeleteCommand();
 
                 da.Update(dt);
                 dt.AcceptChanges();  // Mark all changes as applied
