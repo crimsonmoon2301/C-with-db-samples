@@ -1,0 +1,36 @@
+DROP TABLE IF EXISTS preces;
+DROP TABLE IF EXISTS kategorijas;
+
+CREATE TABLE kategorijas (
+    id               SERIAL       PRIMARY KEY,
+    nosaukums        TEXT         NOT NULL,
+    apraksts         TEXT,
+    kategorijas_id   INTEGER      
+        REFERENCES kategorijas(id)
+);
+
+CREATE TABLE preces (
+    p_id             SERIAL       PRIMARY KEY,
+    nosaukums        TEXT         NOT NULL,
+    cena             DOUBLE PRECISION NOT NULL,
+    kategorija_id    INTEGER     
+        REFERENCES kategorijas(id)
+);
+
+INSERT INTO kategorijas (nosaukums, apraksts, kategorijas_id) VALUES
+  ('Elektronika',            'Visas elektronikas preces', null);
+
+INSERT INTO kategorijas (nosaukums, apraksts, kategorijas_id) VALUES
+  ('Portatīvie datori',      'Laptops un ultrabooks', 1),  -- id = 2
+  ('Telefoni',               'Android un iOS telefoni', 1);
+
+
+INSERT INTO preces (nosaukums, cena, kategorija_id) VALUES
+  -- under Portatīvie datori (kategorija_id = 2)
+  ('Dell XPS 13',           1199.50, 2),
+  ('MacBook Air M2',        1249.00, 2),
+
+  -- under Telefoni (kategorija_id = 1)
+  ('iPhone 14 Pro',         999.99,  3),
+  ('Samsung Galaxy S23',     849.00,  3);
+
