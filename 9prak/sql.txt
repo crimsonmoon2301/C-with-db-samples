@@ -1,0 +1,36 @@
+CREATE TABLE Projekts (
+    ProjektsId SERIAL PRIMARY KEY,
+    Nosaukums VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Ipasnieks (
+    IpasnieksId SERIAL PRIMARY KEY,
+    Vards VARCHAR(100),
+    Uzvards VARCHAR(100)
+);
+
+CREATE TABLE Maja (
+    MajaId SERIAL PRIMARY KEY,
+    Adrese TEXT NOT NULL,
+    Platiba INT,
+    IpasnieksId INT REFERENCES Ipasnieks(IpasnieksId),
+    ProjektsId INT REFERENCES Projekts(ProjektsId)
+);
+
+-- Projekti
+INSERT INTO Projekts (ProjektsId, Nosaukums) VALUES
+(1, 'Jumta renovācija'),
+(2, 'Apkures sistēmas maiņa'),
+(3, 'Fasādes atjaunošana');
+
+-- Īpašnieki
+INSERT INTO Ipasnieks (IpasnieksId, Vards, Uzvards) VALUES
+(1, 'Jānis', 'Ozoliņš'),
+(2, 'Anna', 'Kalniņa'),
+(3, 'Māris', 'Bērziņš');
+
+-- Mājas
+INSERT INTO Maja (MajaId, Adrese, Platiba, IpasnieksId, ProjektsId) VALUES
+(1, 'Brīvības iela 12', 85, 1, 1),
+(2, 'Lāčplēša iela 45', 120, 2, 2),
+(3, 'Dzirnavu iela 78', 65, 3, 3);
